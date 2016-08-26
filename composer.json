@@ -1,0 +1,28 @@
+{
+	"name"             : "litepubl/cms-composer-installer",
+	"description"      : "A custom installer to handle deploying litepubl CMS with composer",
+	"keywords"         : ["litepubl", "liteublisher"],
+	"type"             : "composer-plugin",
+	"license"          : "MIT",
+	"minimum-stability": "dev",
+	"authors"          : [
+		{
+			"name" : "Vladimir Yushko",
+			"email": "yarrowsoft@gmail.com"
+		}
+	],
+	"autoload"         : {
+		"psr-4": {
+			"litepubl\\Composer\\": "Composer/"
+		}
+	},
+	"extra"            : {
+		"class": "litepubl\\Composer\\Plugin"
+	},
+	"require"          : {
+		"composer-plugin-api": "^1.0"
+	},
+	"require-dev"      : {
+		"composer/composer": "1.0.*@dev"
+	}
+}
