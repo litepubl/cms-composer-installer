@@ -1,7 +1,7 @@
 {
 	"name"             : "litepubl/cms-composer-installer",
 	"description"      : "A custom installer to handle deploying litepubl CMS with composer",
-	"keywords"         : ["litepubl", "liteublisher"],
+	"keywords"         : ["litepubl", "litepublisher"],
 	"type"             : "composer-plugin",
 	"license"          : "MIT",
 	"minimum-stability": "dev",
@@ -20,6 +20,7 @@
 		"class": "litepubl\\Composer\\Plugin"
 	},
 	"require"          : {
+        "php": ">=7.00.0"
 		"composer-plugin-api": "^1.0"
 	},
 	"require-dev"      : {
