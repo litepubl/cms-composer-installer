@@ -52,6 +52,6 @@ class Installer extends \Composer\Installers\Installer
     {
             $framework = new LitepublInstaller(null, $this->composer, $this->io);
             $locations = array_keys($framework->getLocations());
-        return '(' . implode('|', $locations) . ')' : false;
+        return '(' . implode('|', $locations) . ')';
     }
 }
