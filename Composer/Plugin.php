@@ -9,12 +9,6 @@ use Composer\Plugin\PluginInterface;
 class Plugin implements PluginInterface
 {
 
-    /**
-     * Apply plugin modifications to composer
-     *
-     * @param Composer    $composer
-     * @param IOInterface $io
-     */
     public function activate( Composer $composer, IOInterface $io ) 
     {
         $installer = new Installer($io, $composer);

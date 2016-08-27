@@ -1,55 +1,52 @@
 <?php
-
 namespace litepubl\Composer;
 
+use Composer\IO\IOInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Package\PackageInterface;
+use Composer\Repository\InstalledRepositoryInterface;
 
-class Installer extends LibraryInstaller
+class Installer extends \Composer\Installers\Installer
 {
-    const TYPE = 'litepubl-core';
-    const INSTALLDIR = 'litepubl-install-dir';
-
-    private static $_installedPaths = array();
-
     /**
      * {@inheritDoc}
      */
-    public function getInstallPath( PackageInterface $package )
+const VENDOR = 'litepubl';
+
+    public function getInstallPath(PackageInterface $package)
     {
-        $installDir = false;
-        $prettyName      = $package->getPrettyName();
-        if ($this->composer->getPackage() ) {
-            $topExtra = $this->composer->getPackage()->getExtra();
-            if (! empty($topExtra[static::INSTALLDIR]) ) {
-                $installDir = $topExtra[static::INSTALLDIR];
-                if (is_array($installDir) ) {
-                    $installDir = empty($installDir[$prettyName]) ? false : $installDir[$prettyName];
-                }
+        $type = $package->getType();
+        $frameworkType = $this->findFrameworkType($type);
+        $installer = new LitepublInstaller($package, $this->composer, $this->io);
+        return $installer->getInstallPath($package, $frameworkType);
+    }
+
+    /**
+     * Finds a supported framework type if it exists and returns it
+     *
+     * @param  string $type
+     * @return string
+     */
+    protected function findFrameworkType($type)
+    {
+            if (static::VENDOR === substr($type, 0, strlen(static::VENDOR ))) {
+return static::VENDOR;
             }
-        }
-        $extra = $package->getExtra();
-        if (! $installDir && ! empty($extra[static::INSTALLDIR]) ) {
-            $installDir = $extra[static::INSTALLDIR];
-        }
-        if (! $installDir ) {
-            $installDir = 'litepubl';
-        }
-        if (! empty(self::$_installedPaths[$installDir]) 
-            && $prettyName !== self::$_installedPaths[$installDir]
-        ) {
-            throw new \InvalidArgumentException('Two packages cannot share the same directory!');
-        }
-        self::$_installedPaths[$installDir] = $prettyName;
-        return $installDir;
+
+        return false;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the second part of the regular expression to check for support of a
+     * package type
+     *
+     * @param  string $frameworkType
+     * @return string
      */
-    public function supports( $packageType ) 
+    protected function getLocationPattern($frameworkType)
     {
-        return self::TYPE === $packageType;
-    }
-
+            $framework = new LitepublInstaller(null, $this->composer, $this->io);
+            $locations = array_keys($framework->getLocations());
+return '(' . implode('|', $locations) . ')' : false;
+}
 }
